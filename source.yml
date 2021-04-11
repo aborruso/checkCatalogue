@@ -1,0 +1,6 @@
+- name: openDataComunePalermo
+  description: Catalogo Open Data Comune Palermo
+  URL: https://opendata.comune.palermo.it/dcat/dcat.php
+  type:
+   name: DCAT-AP_IT
+   version: "1.0"
