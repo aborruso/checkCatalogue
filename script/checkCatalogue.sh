@@ -39,20 +39,71 @@ xq <"$folder"/../output/"$name"/rawdata/catalogue.xml -c '.["rdf:RDF"]["rdf:Desc
 # estrai CSV
 mlr <"$folder"/../output/"$name"/rawdata/distributions.jsonl --j2c unsparsify then cut -x -r -f '[0-9]' then filter '${dc:format:@rdf:resource}=~"CSV"' >"$folder"/../output/"$name"/rawdata/distributionsCSV.csv
 
-demo="yes"
+demo="no"
 
 if [ $demo == "yes" ]; then
   mlr -I --csv head "$folder"/../output/"$name"/rawdata/distributionsCSV.csv
 fi
 
 # scarica dati
+mlr --c2t cut -r -f 'downloadURL' then cat -n "$folder"/../output/"$name"/rawdata/distributionsCSV.csv | tail -n +2 >"$folder"/../output/"$name"/rawdata/distributionsCSV.tsv
 
 download="no"
 
 if [ $download == "yes" ]; then
-  cd "$folder"/../output/"$name"/rawdata/download
-  mlr --csv cut -r -f 'downloadURL' "$folder"/../output/"$name"/rawdata/distributionsCSV.csv | tail -n +2 | while read line; do
-    wget "$line"
-  done
-  cd "$folder"
+  rm "$folder"/../output/"$name"/rawdata/download/*
+  while IFS=$'\t' read -r n URL; do
+    curl -kL -s -o "$folder"/../output/"$name"/rawdata/download/"$n".csv -w "%{http_code}" "$URL" >"$folder"/../output/"$name"/rawdata/download/response_"$n"
+  done <"$folder"/../output/"$name"/rawdata/distributionsCSV.tsv
+  # crea report http reply
+  mlr --n2c cat then put '$file=FILENAME;$file=sub($file,"^.+_","")' then label httpReply,file "$folder"/../output/"$name"/rawdata/download/response_* >"$folder"/../output/"$name"/processing/httpReply.csv
+  rm "$folder"/../output/"$name"/rawdata/download/response_*
 fi
+
+# normalizza il carriage return in modalità UNIX
+
+normalizeCR="no"
+
+if [ $normalizeCR == "yes" ]; then
+  {
+    read
+    while IFS=, read -r code file; do
+      if echo "$code" | grep -P '^2'; then
+        if dos2unix <"$folder"/../output/"$name"/rawdata/download/"$file".csv | cmp - "$folder"/../output/"$name"/rawdata/download/"$file".csv; then
+          echo "ok"
+        else
+          dos2unix "$folder"/../output/"$name"/rawdata/download/"$file".csv
+        fi
+      else
+        echo "non è necessario"
+      fi
+    done
+  } <"$folder"/../output/"$name"/processing/httpReply.csv
+fi
+
+# esegui validazione
+
+validate="no"
+
+if [ $validate == "yes" ]; then
+  rm "$folder"/../output/"$name"/processing/validate.jsonl
+  {
+    read
+    while IFS=, read -r code file; do
+      if echo "$code" | grep -P '^2'; then
+        frictionless validate --json "$folder"/../output/"$name"/rawdata/download/"$file".csv | jq -c '.|= .+ {file:"'"$file"'"}' >>"$folder"/../output/"$name"/processing/validate.jsonl
+      else
+        echo "non validare"
+      fi
+    done
+  } <"$folder"/../output/"$name"/processing/httpReply.csv
+fi
+
+# estrai elenco errori
+
+<"$folder"/../output/"$name"/processing/validate.jsonl | jq -r '.tasks[0]|if (.errors|type)=="array" then (.errors[].code + "," + .resource.path) else (.errors.code + "," + .resource.path) end' | mlr --n2c --ifs "," cat >"$folder"/../output/"$name"/processing/errors.csv
+
+mlr -I --csv label error,file then put -S '$file=sub($file,"^.+download/","")' then filter -x -S '$error=""' "$folder"/../output/"$name"/processing/errors.csv
+
+<"$folder"/../output/"$name"/processing/validate.jsonl | jq -r '.|[.tasks[0].resource.encoding,.tasks[0].resource.dialect?.delimiter?,.tasks[0].resource.stats.bytes,.tasks[0].resource.stats.fields,.tasks[0].resource.stats.rows,.tasks[0].valid,.stats.errors,.valid,.file]|@csv' | mlr --csv -N --fs "," cat | mlr --n2c --ifs "," cat >"$folder"/../output/"$name"/processing/validate.csv
+
