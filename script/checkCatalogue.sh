@@ -4,6 +4,8 @@ set -x
 
 folder="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+date=$(date --iso-8601)
+
 if [ ! -f "$folder"/../source.yml ]; then
   echo "Non esiste il file sorgente"
   exit
@@ -16,6 +18,10 @@ mkdir -p "$folder"/../output/"$name"
 mkdir -p "$folder"/../output/"$name"/rawdata
 mkdir -p "$folder"/../output/"$name"/rawdata/download
 mkdir -p "$folder"/../output/"$name"/processing
+mkdir -p "$folder"/../output/"$name"/processing/report
+
+# crea file metadati
+echo "date=\"$date\"" >"$folder"/../output/"$name"/processing/report/meta
 
 # scarica dati
 if [ ! -f "$folder"/../output/"$name"/rawdata/catalogue.ttl ]; then
