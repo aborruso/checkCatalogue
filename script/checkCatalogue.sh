@@ -13,6 +13,7 @@ fi
 
 name=$(yq <"$folder"/../source.yml -r '.[].name')
 URL=$(yq <"$folder"/../source.yml -r '.[].URL')
+description=$(yq <"$folder"/../source.yml -r '.[].description')
 
 mkdir -p "$folder"/../output/"$name"
 mkdir -p "$folder"/../output/"$name"/rawdata
@@ -22,6 +23,8 @@ mkdir -p "$folder"/../output/"$name"/processing/report
 
 # crea file metadati
 echo "date=\"$date\"" >"$folder"/../output/"$name"/processing/report/meta
+echo "description=\"$description\"" >>"$folder"/../output/"$name"/processing/report/meta
+echo "URL=\"$URL\"" >>"$folder"/../output/"$name"/processing/report/meta
 
 # scarica dati
 if [ ! -f "$folder"/../output/"$name"/rawdata/catalogue.ttl ]; then
@@ -37,12 +40,13 @@ if [ ! -f "$folder"/../output/"$name"/rawdata/catalogue.xml ]; then
   cd "$folder"
 fi
 
-# estrai risorse
-
+# estrai risorse e converti in jsonlines
 xq <"$folder"/../output/"$name"/rawdata/catalogue.xml -c '.["rdf:RDF"]["rdf:Description"][]|select(.["rdf:type"][0]?["@rdf:resource"] | contains("Distribution"))' >"$folder"/../output/"$name"/rawdata/distributions.jsonl
+
+# estrai dataset e converti in jsonlines
 xq <"$folder"/../output/"$name"/rawdata/catalogue.xml -c '.["rdf:RDF"]["rdf:Description"][]|select(.["rdf:type"][0]?["@rdf:resource"] | contains("Dataset"))' >"$folder"/../output/"$name"/rawdata/dataset.jsonl
 
-# estrai CSV
+# converti in CSV le risorse che sono in CSV
 mlr <"$folder"/../output/"$name"/rawdata/distributions.jsonl --j2c unsparsify then cut -x -r -f '[0-9]' then filter '${dc:format:@rdf:resource}=~"CSV"' >"$folder"/../output/"$name"/rawdata/distributionsCSV.csv
 
 demo="no"
@@ -51,7 +55,8 @@ if [ $demo == "yes" ]; then
   mlr -I --csv head "$folder"/../output/"$name"/rawdata/distributionsCSV.csv
 fi
 
-# scarica dati
+### scarico dati ###
+
 mlr --c2t cut -r -f 'downloadURL' then cat -n "$folder"/../output/"$name"/rawdata/distributionsCSV.csv | tail -n +2 >"$folder"/../output/"$name"/rawdata/distributionsCSV.tsv
 
 download="no"
@@ -66,7 +71,10 @@ if [ $download == "yes" ]; then
   rm "$folder"/../output/"$name"/rawdata/download/response_*
 fi
 
-# normalizza il carriage return in modalità UNIX
+### scarico dati ###
+
+# normalizza il carriage return in modalità UNIX, altrimenti si hanno questi problemi
+# https://github.com/frictionlessdata/frictionless-py/issues/803#issuecomment-819445397
 
 normalizeCR="no"
 
@@ -96,6 +104,7 @@ if [ $validate == "yes" ]; then
   {
     read
     while IFS=, read -r code file; do
+      # valida soltanto le risorse che hanno dato una risposta HTTP positiva
       if echo "$code" | grep -P '^2'; then
         frictionless validate --json "$folder"/../output/"$name"/rawdata/download/"$file".csv | jq -c '.|= .+ {file:"'"$file"'"}' >>"$folder"/../output/"$name"/processing/validate.jsonl
       else
@@ -126,3 +135,13 @@ mlr -I --csv label encoding,delimiter,bytes,fields,rows,valid,errors,validBis,fi
 
 # versione wide report errori
 mlr --csv reshape -s error,count then unsparsify "$folder"/../output/"$name"/processing/errors.csv >"$folder"/../output/"$name"/processing/errors_wide.csv
+
+### conteggio errori ###1
+
+# errrori totali
+# se un solo file ha 10 errori di riga vuota, conta 10
+
+mlr --csv stats1 -a sum -f count -g error "$folder"/../output/openDataComunePalermo/processing/errors.csv> "$folder"/../output/"$name"/processing/errorsCount.csv
+
+# numero di file per ogni tipo di errore
+mlr --csv count -g error,file then count -g error then sort -nr count "$folder"/../output/openDataComunePalermo/processing/errors.csv > "$folder"/../output/"$name"/processing/errorsCountFilePerTipo.csv

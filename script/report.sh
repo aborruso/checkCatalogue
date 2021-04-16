@@ -26,10 +26,14 @@ source "$folder"/../output/"$name"/processing/report/meta
 ### http reply ###
 
 # titolo sezione
-cat <<- EOF > "$folder"/../output/"$name"/processing/report/"$name".md
+cat <<-EOF >"$folder"/../output/"$name"/processing/report/"$name".md
+🏢 $description<br>
+🔗 $URL<br>
 📅 $date
 
 ---
+
+# Intro
 
 ## Check HTTP
 
@@ -40,14 +44,14 @@ mlr --c2m count-distinct -f httpReply "$folder"/../output/openDataComunePalermo/
 
 # aggiungi link a file dettagli
 
-mlr --n2c --ifs '\t' label id,downloadURL  "$folder"/../output/openDataComunePalermo/rawdata/distributionsCSV.tsv >"$folder"/../output/"$name"/rawdata/tmp.csv
+mlr --n2c --ifs '\t' label id,downloadURL "$folder"/../output/openDataComunePalermo/rawdata/distributionsCSV.tsv >"$folder"/../output/"$name"/rawdata/tmp.csv
 
 mlr --csv join --ul -j "dcat:downloadURL:@rdf:resource" -l "dcat:downloadURL:@rdf:resource" -r downloadURL -f "$folder"/../output/openDataComunePalermo/rawdata/distributionsCSV.csv then unsparsify then reorder -f id "$folder"/../output/openDataComunePalermo/rawdata/tmp.csv >"$folder"/../output/"$name"/processing/report/HTTPreport.csv
 
 mlr --csv join --ul -j id -l id -r file -f "$folder"/../output/openDataComunePalermo/processing/report/HTTPreport.csv then unsparsify then sort -n id "$folder"/../output/openDataComunePalermo/processing/httpReply.csv | sponge "$folder"/../output/openDataComunePalermo/processing/report/HTTPreport.csv
 
 # titolo sezione
-cat <<- EOF >> "$folder"/../output/"$name"/processing/report/"$name".md
+cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
 
 ▶ [Report HTTP completo](./HTTPreport.csv)
 
@@ -55,3 +59,73 @@ EOF
 
 ### http reply ###
 
+### tipo di risorse ###
+
+# titolo sezione
+cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+## Formati delle risorse
+
+EOF
+
+mlr <"$folder"/../output/"$name"/rawdata/distributions.jsonl --json unsparsify then \
+  cut -x -r -f '[0-9]' then \
+  rename -r '.*format.*,format' then \
+  put '$format=sub($format,"^.+/","")' then \
+  count-distinct -f format >"$folder"/../output/"$name"/processing/distributionsFormat.json
+
+mlr <"$folder"/../output/"$name"/processing/distributionsFormat.json --j2m cat >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+### tipo di risorse ###
+
+### risorse per dataset ###
+
+numeroDataset=$(wc <"$folder"/../output/"$name"/rawdata/dataset.jsonl -l)
+numeroRisorse=$(wc <"$folder"/../output/"$name"/rawdata/distributions.jsonl -l)
+numeroCSV=$(mlr --j2n filter '$format=="CSV"' then cut -f count "$folder"/../output/"$name"/processing/distributionsFormat.json)
+numeroFileErrore=$(mlr --c2n count -n -g file "$folder"/../output/openDataComunePalermo/processing/errors.csv)
+
+cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+## Dataset e risorse - numeri
+
+- Numero di dataset: \`$numeroDataset\`
+- Numero di risorse: \`$numeroRisorse\`
+
+### Conteggi di risorse per dataset
+
+EOF
+
+mlr <"$folder"/../output/"$name"/rawdata/distributions.jsonl --j2m unsparsify then cut -x -r -f '[0-9]' then rename -r '.*accessURL.*,accessURL' then count-distinct -f accessURL then cut -f count then stats1 -a p25,p50,p75,mean,min,max -f count then rename -r '.+p,percentile 0.' then rename -r '.*count_,' >>"$folder"/../output/"$name"/processing/report/"$name".md
+### risorse per dataset ###
+
+### errori ###
+
+mlr --csv join --ul -j "dcat:downloadURL:@rdf:resource" -l "dcat:downloadURL:@rdf:resource" -r downloadURL -f "$folder"/../output/openDataComunePalermo/rawdata/distributionsCSV.csv then unsparsify then reorder -f id then put -S '$id=$id.".csv"' "$folder"/../output/openDataComunePalermo/rawdata/tmp.csv >"$folder"/../output/"$name"/processing/report/errorsReport.csv
+
+mlr --csv join --ul -j id -l id -r file -f "$folder"/../output/"$name"/processing/report/errorsReport.csv then unsparsify "$folder"/../output/openDataComunePalermo/processing/errors_wide.csv | sponge "$folder"/../output/"$name"/processing/report/errorsReport.csv
+
+cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+# Check errori
+
+**NOTA BENE**: questo check è stato eseguito soltanto sulle risorse in formato \`CSV\`,
+che qui sono un totale di **$numeroCSV** su $numeroRisorse (il \`$(awk "BEGIN {printf \"%.2f\n\", $numeroCSV / $numeroRisorse*100}") %\`).
+
+Il numero di file \`CSV\` che presenta almeno un errore è di **$numeroFileErrore** (il \`$(awk "BEGIN {printf \"%.2f\n\", $numeroFileErrore / $numeroCSV*100}") %\` del totale).
+
+▶ [Report errori di dettaglio](./errorsReport.csv)
+
+## Tipi di errore - totale per tipo
+
+EOF
+
+mlr --c2m sort -nr count_sum then label error,count "$folder"/../output/"$name"/processing/errorsCount.csv >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+## Tipi di errore - numero di file per tipo
+
+EOF
+
+mlr --c2m cat "$folder"/../output/"$name"/processing/errorsCountFilePerTipo.csv >>"$folder"/../output/"$name"/processing/report/"$name".md
