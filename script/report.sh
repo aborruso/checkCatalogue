@@ -107,10 +107,49 @@ mlr --csv join --ul -j id -l id -r file -f "$folder"/../output/"$name"/processin
 
 cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
 
-# Check errori
+# Check
+
+## Intro
 
 **NOTA BENE**: questo check è stato eseguito soltanto sulle risorse in formato \`CSV\`,
 che qui sono un totale di **$numeroCSV** su $numeroRisorse (il \`$(awk "BEGIN {printf \"%.2f\n\", $numeroCSV / $numeroRisorse*100}") %\`).
+
+### Forma e dimensioni
+
+A seguire uno spaccato su:
+
+- dimensioni in *bytes*;
+- numero di righe e numero di colonne.
+
+\`p25\`, \`p50\` e \`p75\` sono i percentili al 25, 50 e 75 %.
+
+EOF
+
+mlr --c2m filter -x -S '$encoding==""' then cut  -f bytes,fields,rows then stats1 -a min,max,mean,p25,p50,p75 -f bytes,fields,rows then reshape -r  '_' -o item,value then nest --explode --values --across-fields -f item --nested-fs "_" then reshape -s item_2,value then rename item_1,property ../output/openDataComunePalermo/processing/validate.csv >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+### Encoding
+
+Questi i separatori di campo delle risorse CSV del catalogo.
+
+EOF
+
+mlr --c2m filter -x -S '$encoding==""' then count-distinct -f encoding "$folder"/../output/openDataComunePalermo/processing/validate.csv >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+### Separatori
+
+Questo l'*encoding* delle risorse CSV del catalogo.
+
+EOF
+
+mlr --c2m filter -x -S '$encoding==""' then count-distinct -f delimiter "$folder"/../output/openDataComunePalermo/processing/validate.csv >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+## Errori
 
 Il numero di file \`CSV\` che presenta almeno un errore è di **$numeroFileErrore** (il \`$(awk "BEGIN {printf \"%.2f\n\", $numeroFileErrore / $numeroCSV*100}") %\` del totale).
 

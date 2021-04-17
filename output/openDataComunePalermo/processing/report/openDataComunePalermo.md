@@ -38,10 +38,48 @@
 | --- | --- | --- | --- | --- | --- |
 | 1 | 1 | 1 | 1.077526 | 1 | 7 |
 
-# Check errori
+# Check
+
+## Intro
 
 **NOTA BENE**: questo check è stato eseguito soltanto sulle risorse in formato `CSV`,
 che qui sono un totale di **418** su 1237 (il `33.79 %`).
+
+### Forma e dimensioni
+
+A seguire uno spaccato su:
+
+- dimensioni in *bytes*;
+- numero di righe e numero di colonne.
+
+`p25`, `p50` e `p75` sono i percentili al 25, 50 e 75 %.
+
+| property | min | max | mean | p25 | p50 | p75 |
+| --- | --- | --- | --- | --- | --- | --- |
+| bytes | 105 | 1747212 | 37422.798365 | 450 | 1182 | 3656 |
+| fields | 1 | 247 | 12.089918 | 5 | 8 | 12 |
+| rows | 0 | 15910 | 416.828338 | 10 | 20 | 56 |
+
+### Encoding
+
+Questi i separatori di campo delle risorse CSV del catalogo.
+
+| encoding | count |
+| --- | --- |
+| iso8859-1 | 118 |
+| utf-8 | 220 |
+| cp1252 | 29 |
+
+### Separatori
+
+Questo l'*encoding* delle risorse CSV del catalogo.
+
+| delimiter | count |
+| --- | --- |
+| , | 12 |
+| ; | 355 |
+
+## Errori
 
 Il numero di file `CSV` che presenta almeno un errore è di **161** (il `38.52 %` del totale).
 
