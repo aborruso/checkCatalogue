@@ -50,6 +50,8 @@ mlr --csv join --ul -j "dcat:downloadURL:@rdf:resource" -l "dcat:downloadURL:@rd
 
 mlr --csv join --ul -j id -l id -r file -f "$folder"/../output/openDataComunePalermo/processing/report/HTTPreport.csv then unsparsify then sort -n id "$folder"/../output/openDataComunePalermo/processing/httpReply.csv | sponge "$folder"/../output/openDataComunePalermo/processing/report/HTTPreport.csv
 
+mlr -I reorder -f id,httpReply "$folder"/../output/openDataComunePalermo/processing/report/HTTPreport.csv
+
 # titolo sezione
 cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
 
@@ -104,6 +106,8 @@ mlr <"$folder"/../output/"$name"/rawdata/distributions.jsonl --j2m unsparsify th
 mlr --csv join --ul -j "dcat:downloadURL:@rdf:resource" -l "dcat:downloadURL:@rdf:resource" -r downloadURL -f "$folder"/../output/openDataComunePalermo/rawdata/distributionsCSV.csv then unsparsify then reorder -f id then put -S '$id=$id.".csv"' "$folder"/../output/openDataComunePalermo/rawdata/tmp.csv >"$folder"/../output/"$name"/processing/report/errorsReport.csv
 
 mlr --csv join --ul -j id -l id -r file -f "$folder"/../output/"$name"/processing/report/errorsReport.csv then unsparsify "$folder"/../output/openDataComunePalermo/processing/errors_wide.csv | sponge "$folder"/../output/"$name"/processing/report/errorsReport.csv
+
+mlr -I --csv put -S '$id=sub($id,"\..+","")' then sort -n id "$folder"/../output/"$name"/processing/report/errorsReport.csv
 
 cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
 
