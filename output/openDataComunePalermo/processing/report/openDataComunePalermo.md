@@ -62,7 +62,7 @@ A seguire uno spaccato su:
 
 ### Encoding
 
-Questi i separatori di campo delle risorse CSV del catalogo.
+Questo l'*encoding* delle risorse CSV del catalogo.
 
 | encoding | count |
 | --- | --- |
@@ -72,7 +72,7 @@ Questi i separatori di campo delle risorse CSV del catalogo.
 
 ### Separatori
 
-Questo l'*encoding* delle risorse CSV del catalogo.
+Questi i separatori di campo delle risorse CSV del catalogo.
 
 | delimiter | count |
 | --- | --- |

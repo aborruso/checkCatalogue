@@ -135,7 +135,7 @@ cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
 
 ### Encoding
 
-Questi i separatori di campo delle risorse CSV del catalogo.
+Questo l'*encoding* delle risorse CSV del catalogo.
 
 EOF
 
@@ -145,7 +145,7 @@ cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
 
 ### Separatori
 
-Questo l'*encoding* delle risorse CSV del catalogo.
+Questi i separatori di campo delle risorse CSV del catalogo.
 
 EOF
 
