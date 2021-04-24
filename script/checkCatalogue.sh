@@ -97,7 +97,7 @@ fi
 
 # esegui validazione
 
-validate="no"
+validate="yes"
 
 if [ $validate == "yes" ]; then
   rm "$folder"/../output/"$name"/processing/validate.jsonl

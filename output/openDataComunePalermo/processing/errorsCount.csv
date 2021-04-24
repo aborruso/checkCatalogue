@@ -1,6 +1,5 @@
 error,count_sum
 type-error,803
-duplicate-label,180
+duplicate-label,179
 blank-label,711
 blank-row,3861
-incorrect-label,128

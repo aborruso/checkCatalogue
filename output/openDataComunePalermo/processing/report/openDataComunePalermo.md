@@ -1,6 +1,6 @@
 🏢 Catalogo Open Data Comune Palermo<br>
 🔗 https://opendata.comune.palermo.it/dcat/dcat.php<br>
-📅 2021-04-15
+📅 2021-04-24
 
 ---
 
@@ -56,7 +56,7 @@ A seguire uno spaccato su:
 
 | property | min | max | mean | p25 | p50 | p75 |
 | --- | --- | --- | --- | --- | --- | --- |
-| bytes | 105 | 1747212 | 37422.798365 | 450 | 1182 | 3656 |
+| bytes | 105 | 1747212 | 37422.801090 | 450 | 1182 | 3656 |
 | fields | 1 | 247 | 12.089918 | 5 | 8 | 12 |
 | rows | 0 | 15910 | 416.828338 | 10 | 20 | 56 |
 
@@ -81,7 +81,7 @@ Questo l'*encoding* delle risorse CSV del catalogo.
 
 ## Errori
 
-Il numero di file `CSV` che presenta almeno un errore è di **161** (il `38.52 %` del totale).
+Il numero di file `CSV` che presenta almeno un errore è di **149** (il `35.65 %` del totale).
 
 ▶ [Report errori di dettaglio](./errorsReport.csv)
 
@@ -92,8 +92,7 @@ Il numero di file `CSV` che presenta almeno un errore è di **161** (il `38.52 %
 | blank-row | 3861 |
 | type-error | 803 |
 | blank-label | 711 |
-| duplicate-label | 180 |
-| incorrect-label | 128 |
+| duplicate-label | 179 |
 
 ## Tipi di errore - numero di file per tipo
 
@@ -101,6 +100,5 @@ Il numero di file `CSV` che presenta almeno un errore è di **161** (il `38.52 %
 | --- | --- |
 | blank-row | 89 |
 | blank-label | 64 |
-| duplicate-label | 42 |
+| duplicate-label | 41 |
 | type-error | 23 |
-| incorrect-label | 19 |
