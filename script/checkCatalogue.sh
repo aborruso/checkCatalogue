@@ -128,10 +128,11 @@ jq <"$folder"/../output/"$name"/processing/validate.jsonl -r '.|[
 .tasks[0].valid,
 .stats.errors,
 .valid,
+(.errors|length),
 .file
 ]|@csv' | mlr --csv -N --fs "," cat | mlr --n2c --ifs "," cat >"$folder"/../output/"$name"/processing/validate.csv
 
-mlr -I --csv label encoding,delimiter,bytes,fields,rows,valid,errors,validBis,file then put 'if($delimiter==""){$delimiter=","}else{$delimiter=$delimiter}' "$folder"/../output/"$name"/processing/validate.csv
+mlr -I --csv label encoding,delimiter,bytes,fields,rows,valid,errors,validPackage,frictionLessError,file then put 'if($delimiter==""){$delimiter=","}else{$delimiter=$delimiter}' "$folder"/../output/"$name"/processing/validate.csv
 
 # versione wide report errori
 mlr --csv reshape -s error,count then unsparsify "$folder"/../output/"$name"/processing/errors.csv >"$folder"/../output/"$name"/processing/errors_wide.csv
