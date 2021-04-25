@@ -38,13 +38,6 @@
 | --- | --- | --- | --- | --- | --- |
 | 1 | 1 | 1 | 1.077526 | 1 | 7 |
 
-## Riepilogo anagrafico
-
-Nel file seguente la raccolta ordinata, per tutti i file, delle informazioni principali di ogni risorsa:
-
-▶ [Report anagrafico](./anagrafica.csv)
-
-
 # Check
 
 ## Intro
@@ -85,6 +78,13 @@ Questi i separatori di campo delle risorse CSV del catalogo.
 | --- | --- |
 | , | 12 |
 | ; | 355 |
+
+## Riepilogo anagrafico
+
+Nel file seguente la raccolta ordinata, per tutti i file, delle informazioni principali di ogni risorsa:
+
+▶ [Report anagrafico](./anagrafica.csv)
+
 
 ## Errori
 

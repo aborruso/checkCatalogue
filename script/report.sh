@@ -109,23 +109,6 @@ mlr --csv join --ul -j id -l id -r file -f "$folder"/../output/"$name"/processin
 
 mlr -I --csv put -S '$id=sub($id,"\..+","")' then sort -n id "$folder"/../output/"$name"/processing/report/errorsReport.csv
 
-### anagrafica di base
-
-mlr --csv join --ul -j file -l file -r id -f "$folder"/../output/"$name"/processing/validate.csv then unsparsify  "$folder"/../output/openDataComunePalermo/rawdata/tmp.csv >"$folder"/../output/openDataComunePalermo/rawdata/tmp_validate.csv
-
-mlr --csv join --ul -j downloadURL -l downloadURL -r "dcat:downloadURL:@rdf:resource" -f "$folder"/../output/openDataComunePalermo/rawdata/tmp_validate.csv then unsparsify then reorder -e -f downloadURL "$folder"/../output/openDataComunePalermo/rawdata/distributionsCSV.csv >"$folder"/../output/"$name"/processing/report/anagrafica.csv
-
-cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
-
-## Riepilogo anagrafico
-
-Nel file seguente la raccolta ordinata, per tutti i file, delle informazioni principali di ogni risorsa:
-
-▶ [Report anagrafico](./anagrafica.csv)
-
-EOF
-
-
 cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
 
 # Check
@@ -167,6 +150,22 @@ Questi i separatori di campo delle risorse CSV del catalogo.
 EOF
 
 mlr --c2m filter -x -S '$encoding==""' then count-distinct -f delimiter "$folder"/../output/openDataComunePalermo/processing/validate.csv >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+### anagrafica di base
+
+mlr --csv join --ul -j file -l file -r id -f "$folder"/../output/"$name"/processing/validate.csv then unsparsify  "$folder"/../output/openDataComunePalermo/rawdata/tmp.csv >"$folder"/../output/openDataComunePalermo/rawdata/tmp_validate.csv
+
+mlr --csv join --ul -j downloadURL -l downloadURL -r "dcat:downloadURL:@rdf:resource" -f "$folder"/../output/openDataComunePalermo/rawdata/tmp_validate.csv then unsparsify then reorder -e -f downloadURL "$folder"/../output/openDataComunePalermo/rawdata/distributionsCSV.csv >"$folder"/../output/"$name"/processing/report/anagrafica.csv
+
+cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
+
+## Riepilogo anagrafico
+
+Nel file seguente la raccolta ordinata, per tutti i file, delle informazioni principali di ogni risorsa:
+
+▶ [Report anagrafico](./anagrafica.csv)
+
+EOF
 
 cat <<-EOF >>"$folder"/../output/"$name"/processing/report/"$name".md
 
