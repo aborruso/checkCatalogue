@@ -112,15 +112,14 @@ if [ $validate == "yes" ]; then
       fi
     done
   } <"$folder"/../output/"$name"/processing/httpReply.csv
-fi
 
-# estrai elenco errori
+  # estrai elenco errori
 
-jq <"$folder"/../output/"$name"/processing/validate.jsonl -r '.tasks[0]|if (.errors|type)=="array" then (.errors[].code + "," + .resource.path) else (.errors.code + "," + .resource.path) end' | mlr --n2c --ifs "," cat >"$folder"/../output/"$name"/processing/errors.csv
+  jq <"$folder"/../output/"$name"/processing/validate.jsonl -r '.tasks[0]|if (.errors|type)=="array" then (.errors[].code + "," + .resource.path) else (.errors.code + "," + .resource.path) end' | mlr --n2c --ifs "," cat >"$folder"/../output/"$name"/processing/errors.csv
 
-mlr -I --csv label error,file then put -S '$file=sub($file,"^.+download/","")' then filter -x -S '$error==""' then count-distinct -f error,file "$folder"/../output/"$name"/processing/errors.csv
+  mlr -I --csv label error,file then put -S '$file=sub($file,"^.+download/","")' then filter -x -S '$error==""' then count-distinct -f error,file "$folder"/../output/"$name"/processing/errors.csv
 
-jq <"$folder"/../output/"$name"/processing/validate.jsonl -r '.|[
+  jq <"$folder"/../output/"$name"/processing/validate.jsonl -r '.|[
 .tasks[0].resource.encoding,.tasks[0].resource.dialect?.delimiter?,
 .tasks[0].resource.stats.bytes,
 .tasks[0].resource.stats.fields,
@@ -132,17 +131,18 @@ jq <"$folder"/../output/"$name"/processing/validate.jsonl -r '.|[
 .file
 ]|@csv' | mlr --csv -N --fs "," cat | mlr --n2c --ifs "," cat >"$folder"/../output/"$name"/processing/validate.csv
 
-mlr -I --csv label encoding,delimiter,bytes,fields,rows,valid,errors,validPackage,frictionLessError,file then put 'if($delimiter==""){$delimiter=","}else{$delimiter=$delimiter}' "$folder"/../output/"$name"/processing/validate.csv
+  mlr -I --csv label encoding,delimiter,bytes,fields,rows,valid,errors,validPackage,frictionLessError,file then put 'if($delimiter==""){$delimiter=","}else{$delimiter=$delimiter}' "$folder"/../output/"$name"/processing/validate.csv
 
-# versione wide report errori
-mlr --csv reshape -s error,count then unsparsify "$folder"/../output/"$name"/processing/errors.csv >"$folder"/../output/"$name"/processing/errors_wide.csv
+  # versione wide report errori
+  mlr --csv reshape -s error,count then unsparsify "$folder"/../output/"$name"/processing/errors.csv >"$folder"/../output/"$name"/processing/errors_wide.csv
 
-### conteggio errori ###1
+  ### conteggio errori ###1
 
-# errrori totali
-# se un solo file ha 10 errori di riga vuota, conta 10
+  # errrori totali
+  # se un solo file ha 10 errori di riga vuota, conta 10
 
-mlr --csv stats1 -a sum -f count -g error "$folder"/../output/openDataComunePalermo/processing/errors.csv> "$folder"/../output/"$name"/processing/errorsCount.csv
+  mlr --csv stats1 -a sum -f count -g error "$folder"/../output/openDataComunePalermo/processing/errors.csv >"$folder"/../output/"$name"/processing/errorsCount.csv
 
-# numero di file per ogni tipo di errore
-mlr --csv count -g error,file then count -g error then sort -nr count "$folder"/../output/openDataComunePalermo/processing/errors.csv > "$folder"/../output/"$name"/processing/errorsCountFilePerTipo.csv
+  # numero di file per ogni tipo di errore
+  mlr --csv count -g error,file then count -g error then sort -nr count "$folder"/../output/openDataComunePalermo/processing/errors.csv >"$folder"/../output/"$name"/processing/errorsCountFilePerTipo.csv
+fi
