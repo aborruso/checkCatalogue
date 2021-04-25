@@ -38,6 +38,13 @@
 | --- | --- | --- | --- | --- | --- |
 | 1 | 1 | 1 | 1.077526 | 1 | 7 |
 
+## Riepilogo anagrafico
+
+Nel file seguente la raccolta ordinata, per tutti i file, delle informazioni principali di ogni risorsa:
+
+▶ [Report anagrafico](./anagrafica.csv)
+
+
 # Check
 
 ## Intro
@@ -85,7 +92,7 @@ Il numero di file `CSV` che presenta almeno un errore è di **149** (il `35.65 %
 
 ▶ [Report errori di dettaglio](./errorsReport.csv)
 
-## Tipi di errore - totale per tipo
+### Tipi di errore - totale per tipo
 
 | error | count |
 | --- | --- |
@@ -94,7 +101,7 @@ Il numero di file `CSV` che presenta almeno un errore è di **149** (il `35.65 %
 | blank-label | 711 |
 | duplicate-label | 179 |
 
-## Tipi di errore - numero di file per tipo
+### Tipi di errore - numero di file per tipo
 
 | error | count |
 | --- | --- |
