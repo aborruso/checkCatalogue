@@ -141,8 +141,8 @@ if [ $validate == "yes" ]; then
   # errrori totali
   # se un solo file ha 10 errori di riga vuota, conta 10
 
-  mlr --csv stats1 -a sum -f count -g error "$folder"/../output/openDataComunePalermo/processing/errors.csv >"$folder"/../output/"$name"/processing/errorsCount.csv
+  mlr --csv stats1 -a sum -f count -g error "$folder"/../output/"$name"/processing/errors.csv >"$folder"/../output/"$name"/processing/errorsCount.csv
 
   # numero di file per ogni tipo di errore
-  mlr --csv count -g error,file then count -g error then sort -nr count "$folder"/../output/openDataComunePalermo/processing/errors.csv >"$folder"/../output/"$name"/processing/errorsCountFilePerTipo.csv
+  mlr --csv count -g error,file then count -g error then sort -nr count "$folder"/../output/"$name"/processing/errors.csv >"$folder"/../output/"$name"/processing/errorsCountFilePerTipo.csv
 fi
