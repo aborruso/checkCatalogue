@@ -103,16 +103,16 @@ Il numero di file `CSV` che presenta almeno un errore è di **18** (il `15.93 %`
 
 | error | count |
 | --- | --- |
-| blank-row | 3861 |
-| type-error | 803 |
-| blank-label | 711 |
-| duplicate-label | 179 |
+| type-error | 74 |
+| duplicate-label | 51 |
+| blank-label | 19 |
+| source-error | 1 |
 
 ### Tipi di errore - numero di file per tipo
 
 | error | count |
 | --- | --- |
-| blank-row | 89 |
-| blank-label | 64 |
-| duplicate-label | 41 |
-| type-error | 23 |
+| blank-label | 8 |
+| type-error | 8 |
+| duplicate-label | 2 |
+| source-error | 1 |
