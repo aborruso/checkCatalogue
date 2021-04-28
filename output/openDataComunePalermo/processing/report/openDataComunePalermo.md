@@ -1,6 +1,6 @@
 🏢 Catalogo Open Data Comune Palermo<br>
 🔗 https://opendata.comune.palermo.it/dcat/dcat.php<br>
-📅 2021-04-24
+📅 2021-04-28
 
 ---
 
@@ -56,9 +56,9 @@ A seguire uno spaccato su:
 
 | property | min | max | mean | p25 | p50 | p75 |
 | --- | --- | --- | --- | --- | --- | --- |
-| bytes | 105 | 1747212 | 37422.801090 | 450 | 1182 | 3656 |
-| fields | 1 | 247 | 12.089918 | 5 | 8 | 12 |
-| rows | 0 | 15910 | 416.828338 | 10 | 20 | 56 |
+| bytes | 105 | 1747212 | 42028.780488 | 450 | 1202 | 3695 |
+| fields | 1 | 247 | 12.720867 | 5 | 8 | 12 |
+| rows | 1 | 15910 | 431.691057 | 10 | 20 | 56 |
 
 ### Encoding
 
@@ -66,9 +66,10 @@ Questo l'*encoding* delle risorse CSV del catalogo.
 
 | encoding | count |
 | --- | --- |
-| iso8859-1 | 118 |
-| utf-8 | 220 |
-| cp1252 | 29 |
+| iso8859-1 | 113 |
+| utf-8 | 221 |
+| cp1252 | 31 |
+| iso8859-9 | 4 |
 
 ### Separatori
 
@@ -77,7 +78,7 @@ Questi i separatori di campo delle risorse CSV del catalogo.
 | delimiter | count |
 | --- | --- |
 | , | 12 |
-| ; | 355 |
+| ; | 357 |
 
 ## Riepilogo anagrafico
 
@@ -97,15 +98,15 @@ Il numero di file `CSV` che presenta almeno un errore è di **149** (il `35.65 %
 | error | count |
 | --- | --- |
 | blank-row | 3861 |
+| blank-label | 951 |
 | type-error | 803 |
-| blank-label | 711 |
-| duplicate-label | 179 |
+| duplicate-label | 177 |
 
 ### Tipi di errore - numero di file per tipo
 
 | error | count |
 | --- | --- |
 | blank-row | 89 |
-| blank-label | 64 |
-| duplicate-label | 41 |
+| blank-label | 65 |
+| duplicate-label | 38 |
 | type-error | 23 |
