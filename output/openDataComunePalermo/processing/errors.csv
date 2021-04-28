@@ -1,6 +1,5 @@
 error,file,count
 type-error,100.csv,1
-duplicate-label,102.csv,1
 blank-label,103.csv,5
 blank-row,103.csv,1
 blank-row,11.csv,2
@@ -28,6 +27,7 @@ blank-label,150.csv,2
 blank-row,151.csv,197
 blank-label,152.csv,11
 blank-row,152.csv,1
+duplicate-label,157.csv,2
 blank-label,159.csv,17
 blank-row,159.csv,50
 type-error,161.csv,13
@@ -59,8 +59,8 @@ duplicate-label,198.csv,3
 blank-label,198.csv,3
 blank-row,198.csv,4
 blank-label,199.csv,3
-duplicate-label,204.csv,1
 blank-row,204.csv,1
+blank-label,205.csv,240
 duplicate-label,210.csv,7
 blank-row,213.csv,11
 blank-row,214.csv,404
@@ -145,7 +145,6 @@ duplicate-label,355.csv,1
 duplicate-label,357.csv,5
 blank-label,358.csv,1
 blank-row,358.csv,1
-duplicate-label,361.csv,1
 blank-row,361.csv,49
 blank-row,363.csv,17
 blank-row,364.csv,3
@@ -165,7 +164,6 @@ blank-label,384.csv,19
 blank-row,384.csv,5
 blank-label,385.csv,1
 blank-row,385.csv,24
-duplicate-label,386.csv,1
 duplicate-label,387.csv,2
 duplicate-label,392.csv,5
 blank-row,393.csv,1
