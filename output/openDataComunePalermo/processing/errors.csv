@@ -79,17 +79,15 @@ duplicate-label,240.csv,10
 blank-label,240.csv,1
 blank-row,240.csv,4
 blank-row,243.csv,19
-type-error,246.csv,13
 type-error,252.csv,1
 duplicate-label,254.csv,2
 duplicate-label,256.csv,5
 blank-row,256.csv,36
 blank-label,26.csv,80
 blank-row,26.csv,19
-type-error,268.csv,12
 blank-row,272.csv,26
 blank-label,273.csv,2
-type-error,274.csv,3
+type-error,274.csv,1
 duplicate-label,279.csv,10
 blank-label,279.csv,3
 blank-row,280.csv,29
@@ -185,7 +183,6 @@ blank-label,45.csv,2
 blank-row,45.csv,5
 duplicate-label,46.csv,4
 blank-row,50.csv,6
-type-error,51.csv,15
 blank-label,52.csv,3
 blank-row,52.csv,10
 blank-label,53.csv,5
@@ -213,4 +210,4 @@ blank-row,85.csv,7
 blank-label,88.csv,2
 blank-row,88.csv,1
 blank-row,90.csv,2
-type-error,98.csv,7
+type-error,98.csv,2

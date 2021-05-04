@@ -106,7 +106,7 @@ if [ $validate == "yes" ]; then
     while IFS=, read -r code file; do
       # valida soltanto le risorse che hanno dato una risposta HTTP positiva
       if echo "$code" | grep -P '^2'; then
-        frictionless validate --buffer-size 250000 --json "$folder"/../output/"$name"/rawdata/download/"$file".csv | jq -c '.|= .+ {file:"'"$file"'"}' >>"$folder"/../output/"$name"/processing/validate.jsonl
+        frictionless validate --buffer-size 250000 --sample-size 500 --json "$folder"/../output/"$name"/rawdata/download/"$file".csv | jq -c '.|= .+ {file:"'"$file"'"}' >>"$folder"/../output/"$name"/processing/validate.jsonl
       else
         echo "non validare"
       fi
