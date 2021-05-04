@@ -6,7 +6,6 @@ file,type-error,blank-label,blank-row,duplicate-label
 118.csv,,8,50,
 12.csv,,,,2
 120.csv,,2,,
-121.csv,1,,,
 122.csv,1,,,
 124.csv,,,23,
 127.csv,,1,,
@@ -22,13 +21,12 @@ file,type-error,blank-label,blank-row,duplicate-label
 152.csv,,11,1,
 157.csv,,,,2
 159.csv,,17,50,
-161.csv,13,,,
 162.csv,,4,12,1
 164.csv,,,2,
 165.csv,,,,3
 168.csv,1,1,,
 169.csv,2,,,
-171.csv,258,,,1
+171.csv,11,,,1
 172.csv,,1,50,
 174.csv,,,4,
 175.csv,,,,2
@@ -46,7 +44,6 @@ file,type-error,blank-label,blank-row,duplicate-label
 214.csv,,,404,
 215.csv,1,,,
 218.csv,,3,15,
-22.csv,204,,,
 220.csv,,241,759,
 223.csv,,,26,
 224.csv,,1,10,
@@ -59,7 +56,6 @@ file,type-error,blank-label,blank-row,duplicate-label
 26.csv,,80,19,
 272.csv,,,26,
 273.csv,,2,,
-274.csv,1,,,
 279.csv,,3,,10
 280.csv,,,29,
 281.csv,,2,,
@@ -139,7 +135,7 @@ file,type-error,blank-label,blank-row,duplicate-label
 72.csv,,,89,
 74.csv,,,59,
 78.csv,,3,,1
-79.csv,258,,,
+79.csv,11,,,
 83.csv,,3,14,2
 85.csv,,,7,
 88.csv,,2,1,

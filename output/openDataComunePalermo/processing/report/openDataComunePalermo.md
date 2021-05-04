@@ -89,7 +89,7 @@ Nel file seguente la raccolta ordinata, per tutti i file, delle informazioni pri
 
 ## Errori
 
-Il numero di file `CSV` che presenta almeno un errore è di **146** (il `34.93 %` del totale).
+Il numero di file `CSV` che presenta almeno un errore è di **142** (il `33.97 %` del totale).
 
 ▶ [Report errori di dettaglio](./errorsReport.csv)
 
@@ -99,8 +99,8 @@ Il numero di file `CSV` che presenta almeno un errore è di **146** (il `34.93 %
 | --- | --- |
 | blank-row | 3861 |
 | blank-label | 951 |
-| type-error | 756 |
 | duplicate-label | 177 |
+| type-error | 43 |
 
 ### Tipi di errore - numero di file per tipo
 
@@ -109,4 +109,4 @@ Il numero di file `CSV` che presenta almeno un errore è di **146** (il `34.93 %
 | blank-row | 89 |
 | blank-label | 65 |
 | duplicate-label | 38 |
-| type-error | 20 |
+| type-error | 16 |
