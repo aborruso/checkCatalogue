@@ -1,3 +1,5 @@
 tmp*
 output/*/rawdata
+output/*/processing
+!output/*/processing/report/*
 presentazione
