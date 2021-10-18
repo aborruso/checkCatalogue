@@ -1,6 +1,6 @@
 🏢 Catalogo Open Data Comune Palermo<br>
 🔗 https://opendata.comune.palermo.it/dcat/dcat.php<br>
-📅 2021-05-04
+📅 2021-10-18
 
 ---
 
@@ -10,8 +10,8 @@
 
 | httpReply | count |
 | --- | --- |
-| 200 | 370 |
-| 404 | 48 |
+| 200 | 379 |
+| 404 | 45 |
 
 ▶ [Report HTTP completo](./HTTPreport.csv)
 
@@ -20,30 +20,30 @@
 
 | format | count |
 | --- | --- |
-| XML | 685 |
-| CSV | 418 |
-| ZIP | 87 |
+| XML | 694 |
+| CSV | 424 |
+| ZIP | 103 |
 | OP_DATPRO | 22 |
 | KML | 24 |
 | SHP | 1 |
 
 ## Dataset e risorse - numeri
 
-- Numero di dataset: `1150`
-- Numero di risorse: `1237`
+- Numero di dataset: `1185`
+- Numero di risorse: `1268`
 
 ### Conteggi di risorse per dataset
 
 | percentile 0.25 | percentile 0.50 | percentile 0.75 | mean | min | max |
 | --- | --- | --- | --- | --- | --- |
-| 1 | 1 | 1 | 1.077526 | 1 | 7 |
+| 1 | 1 | 1 | 1.071851 | 1 | 7 |
 
 # Check
 
 ## Intro
 
 **NOTA BENE**: questo check è stato eseguito soltanto sulle risorse in formato `CSV`,
-che qui sono un totale di **418** su 1237 (il `33.79 %`).
+che qui sono un totale di **424** su 1268 (il `33.44 %`).
 
 ### Forma e dimensioni
 
@@ -56,9 +56,9 @@ A seguire uno spaccato su:
 
 | property | min | max | mean | p25 | p50 | p75 |
 | --- | --- | --- | --- | --- | --- | --- |
-| bytes | 105 | 1747212 | 42028.780488 | 450 | 1202 | 3695 |
-| fields | 1 | 247 | 12.720867 | 5 | 8 | 12 |
-| rows | 1 | 15910 | 431.691057 | 10 | 20 | 56 |
+| bytes | 105 | 1747212 | 36087.300792 | 451 | 1228 | 3735 |
+| fields | 1 | 131 | 12.686016 | 5 | 9 | 13 |
+| rows | 1 | 15910 | 427.633245 | 10 | 20 | 56 |
 
 ### Encoding
 
@@ -66,9 +66,9 @@ Questo l'*encoding* delle risorse CSV del catalogo.
 
 | encoding | count |
 | --- | --- |
-| iso8859-1 | 113 |
-| utf-8 | 221 |
-| cp1252 | 31 |
+| iso8859-1 | 118 |
+| utf-8 | 227 |
+| cp1252 | 30 |
 | iso8859-9 | 4 |
 
 ### Separatori
@@ -78,7 +78,7 @@ Questi i separatori di campo delle risorse CSV del catalogo.
 | delimiter | count |
 | --- | --- |
 | , | 12 |
-| ; | 357 |
+| ; | 367 |
 
 ## Riepilogo anagrafico
 
@@ -89,7 +89,7 @@ Nel file seguente la raccolta ordinata, per tutti i file, delle informazioni pri
 
 ## Errori
 
-Il numero di file `CSV` che presenta almeno un errore è di **142** (il `33.97 %` del totale).
+Il numero di file `CSV` che presenta almeno un errore è di **145** (il `34.20 %` del totale).
 
 ▶ [Report errori di dettaglio](./errorsReport.csv)
 
@@ -97,16 +97,16 @@ Il numero di file `CSV` che presenta almeno un errore è di **142** (il `33.97 %
 
 | error | count |
 | --- | --- |
-| blank-row | 3861 |
-| blank-label | 951 |
+| blank-row | 3105 |
+| blank-label | 470 |
 | duplicate-label | 177 |
-| type-error | 43 |
+| type-error | 50 |
 
 ### Tipi di errore - numero di file per tipo
 
 | error | count |
 | --- | --- |
 | blank-row | 89 |
-| blank-label | 65 |
+| blank-label | 63 |
 | duplicate-label | 38 |
-| type-error | 16 |
+| type-error | 21 |
