@@ -1,6 +1,9 @@
 #!/bin/bash
 
 set -x
+set -e
+set -u
+set -o pipefail
 
 folder="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -21,24 +24,34 @@ mkdir -p "$folder"/../output/"$name"/rawdata/download
 mkdir -p "$folder"/../output/"$name"/processing
 mkdir -p "$folder"/../output/"$name"/processing/report
 
+# fai pulizia cartelle di servizio
+find "$folder"/../output/"$name"/rawdata/download -maxdepth 1 ! -type d -delete
+find "$folder"/../output/"$name"/rawdata -maxdepth 1 ! -type d -delete
+
 # crea file metadati
 echo "date=\"$date\"" >"$folder"/../output/"$name"/processing/report/meta
 echo "description=\"$description\"" >>"$folder"/../output/"$name"/processing/report/meta
 echo "URL=\"$URL\"" >>"$folder"/../output/"$name"/processing/report/meta
 
-# scarica dati
-if [ ! -f "$folder"/../output/"$name"/rawdata/catalogue.ttl ]; then
-  curl -kL "$URL" >"$folder"/../output/"$name"/rawdata/catalogue.ttl
+# scarica catalogo
+curl -kL "$URL" >"$folder"/../output/"$name"/rawdata/catalogue.ttl
+
+# se il file catalogo è vuoto, esci
+if [ -s "$folder"/../output/"$name"/rawdata/catalogue.ttl ]
+then
+     echo "Il file non è vuoto"
+else
+     echo "Il file è vuoto"
+     exit 1
 fi
 
-# converti in XML
-if [ ! -f "$folder"/../output/"$name"/rawdata/catalogue.xml ]; then
-  cd "$folder"/../output/"$name"/rawdata
+# converti catalogo in XML
 
-  riot -out RDF/XML ./catalogue.ttl >./catalogue.xml
+cd "$folder"/../output/"$name"/rawdata
 
-  cd "$folder"
-fi
+riot -out RDF/XML ./catalogue.ttl >./catalogue.xml
+
+cd "$folder"
 
 # estrai risorse e converti in jsonlines
 xq <"$folder"/../output/"$name"/rawdata/catalogue.xml -c '.["rdf:RDF"]["rdf:Description"][]|select(.["rdf:type"][0]?["@rdf:resource"] | contains("Distribution"))' >"$folder"/../output/"$name"/rawdata/distributions.jsonl
@@ -47,7 +60,12 @@ xq <"$folder"/../output/"$name"/rawdata/catalogue.xml -c '.["rdf:RDF"]["rdf:Desc
 xq <"$folder"/../output/"$name"/rawdata/catalogue.xml -c '.["rdf:RDF"]["rdf:Description"][]|select(.["rdf:type"][0]?["@rdf:resource"] | contains("Dataset"))' >"$folder"/../output/"$name"/rawdata/dataset.jsonl
 
 # converti in CSV le risorse che sono in CSV
+
+# Palermo
 mlr <"$folder"/../output/"$name"/rawdata/distributions.jsonl --j2c unsparsify then cut -x -r -f '[0-9]' then filter '${dc:format:@rdf:resource}=~"CSV"' >"$folder"/../output/"$name"/rawdata/distributionsCSV.csv
+
+# Matera
+#mlr <"$folder"/../output/"$name"/rawdata/distributions.jsonl --j2c unsparsify then cut -x -r -f '[0-9]' then filter '${dct:format:@rdf:resource}=~"CSV"' >"$folder"/../output/"$name"/rawdata/distributionsCSV.csv
 
 demo="no"
 
@@ -57,18 +75,25 @@ fi
 
 ### scarico dati ###
 
+# Palermo
 mlr --c2t cut -r -f 'downloadURL' then cat -n "$folder"/../output/"$name"/rawdata/distributionsCSV.csv | tail -n +2 >"$folder"/../output/"$name"/rawdata/distributionsCSV.tsv
 
-download="no"
+# Matera
+#mlr --c2t cut -r -f 'accessURL' then cat -n "$folder"/../output/"$name"/rawdata/distributionsCSV.csv | tail -n +2 >"$folder"/../output/"$name"/rawdata/distributionsCSV.tsv
+
+download="yes"
 
 if [ $download == "yes" ]; then
-  rm "$folder"/../output/"$name"/rawdata/download/*
+  # svuota car
+  find "$folder"/../output/"$name"/rawdata/download -maxdepth 1 ! -type d -delete
+  # scarica tutti i file della lista
   while IFS=$'\t' read -r n URL; do
-    curl -kL -s -o "$folder"/../output/"$name"/rawdata/download/"$n".csv -w "%{http_code}" "$URL" >"$folder"/../output/"$name"/rawdata/download/response_"$n"
+    curl -kL -s --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 40 -o "$folder"/../output/"$name"/rawdata/download/"$n".csv -w "%{http_code}" "$URL" >"$folder"/../output/"$name"/rawdata/download/response_"$n"
   done <"$folder"/../output/"$name"/rawdata/distributionsCSV.tsv
   # crea report http reply
   mlr --n2c cat then put '$file=FILENAME;$file=sub($file,"^.+_","")' then label httpReply,file "$folder"/../output/"$name"/rawdata/download/response_* >"$folder"/../output/"$name"/processing/httpReply.csv
-  rm "$folder"/../output/"$name"/rawdata/download/response_*
+  # cancella i file che contengono le risposte HTTP
+  find "$folder"/../output/"$name"/rawdata/download -maxdepth 1 ! -type d -name 'response_*' -delete
 fi
 
 ### scarico dati ###
@@ -76,12 +101,13 @@ fi
 # normalizza il carriage return in modalità UNIX, altrimenti si hanno questi problemi
 # https://github.com/frictionlessdata/frictionless-py/issues/803#issuecomment-819445397
 
-normalizeCR="no"
+normalizeCR="yes"
 
 if [ $normalizeCR == "yes" ]; then
   {
     read
     while IFS=, read -r code file; do
+      # se il respondo HTTP inizia per 2xxx allora normalizza il carriage return
       if echo "$code" | grep -P '^2'; then
         if dos2unix <"$folder"/../output/"$name"/rawdata/download/"$file".csv | cmp - "$folder"/../output/"$name"/rawdata/download/"$file".csv; then
           echo "ok"
@@ -100,7 +126,9 @@ fi
 validate="yes"
 
 if [ $validate == "yes" ]; then
-  rm "$folder"/../output/"$name"/processing/validate.jsonl
+  if [ -f "$folder"/../output/"$name"/processing/validate.jsonl ]; then
+    rm "$folder"/../output/"$name"/processing/validate.jsonl
+  fi
   {
     read
     while IFS=, read -r code file; do
