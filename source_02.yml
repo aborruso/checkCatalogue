@@ -1,0 +1,6 @@
+- name: openDataComuneMatera
+  description: Catalogo Open Data Comune Matera
+  URL: http://dati.comune.matera.it/catalog.ttl
+  type:
+   name: DCAT-AP_IT
+   version: "1.0"

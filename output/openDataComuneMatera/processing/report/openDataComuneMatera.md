@@ -1,6 +1,6 @@
 🏢 Catalogo Open Data Comune Matera<br>
 🔗 http://dati.comune.matera.it/catalog.ttl<br>
-📅 2021-04-25
+📅 2021-10-17
 
 ---
 
@@ -10,8 +10,9 @@
 
 | httpReply | count |
 | --- | --- |
-| 200 | 108 |
-| 500 | 5 |
+| 200 | 101 |
+| 404 | 14 |
+| 410 | 5 |
 
 ▶ [Report HTTP completo](./HTTPreport.csv)
 
@@ -20,37 +21,37 @@
 
 | format | count |
 | --- | --- |
-| CSV | 113 |
-| XLSX | 89 |
-| XML | 6 |
-| JSON | 4 |
-| GEOJSON | 22 |
-| ZIP | 19 |
-| PDF | 5 |
-| ARC | 7 |
-| KML | 17 |
+| JSON | 14 |
+| CSV | 120 |
+| XLSX | 82 |
+| ZIP | 22 |
+| GEOJSON | 20 |
+| PDF | 8 |
+| KML | 15 |
+| ARC | 3 |
+| XML | 2 |
+| HTML | 4 |
 | XLS | 1 |
 | ODT | 1 |
-| HTML | 3 |
 | TIFF | 1 |
 
 ## Dataset e risorse - numeri
 
 - Numero di dataset: `100`
-- Numero di risorse: `288`
+- Numero di risorse: `293`
 
 ### Conteggi di risorse per dataset
 
 | percentile 0.25 | percentile 0.50 | percentile 0.75 | mean | min | max |
 | --- | --- | --- | --- | --- | --- |
-| 1 | 1 | 1 | 1.000000 | 1 | 1 |
+| 1 | 1 | 1 | 1.028070 | 1 | 9 |
 
 # Check
 
 ## Intro
 
 **NOTA BENE**: questo check è stato eseguito soltanto sulle risorse in formato `CSV`,
-che qui sono un totale di **113** su 288 (il `39.24 %`).
+che qui sono un totale di **120** su 293 (il `40.96 %`).
 
 ### Forma e dimensioni
 
@@ -63,9 +64,9 @@ A seguire uno spaccato su:
 
 | property | min | max | mean | p25 | p50 | p75 |
 | --- | --- | --- | --- | --- | --- | --- |
-| bytes | 0 | 1570863 | 79599.088235 | 666 | 3353 | 26229 |
-| fields | 0 | 135 | 14.303922 | 5 | 9 | 13 |
-| rows | 0 | 22876 | 545.519608 | 10 | 21 | 106 |
+| bytes | 145 | 1051319 | 27245.158416 | 671 | 2548 | 7385 |
+| fields | 1 | 135 | 13.079208 | 5 | 7 | 13 |
+| rows | 0 | 4626 | 206.900990 | 12 | 26 | 87 |
 
 ### Encoding
 
@@ -73,10 +74,9 @@ Questo l'*encoding* delle risorse CSV del catalogo.
 
 | encoding | count |
 | --- | --- |
-| utf-8 | 91 |
-| iso8859-1 | 9 |
-| euc_kr | 1 |
-| cp1252 | 1 |
+| iso8859-1 | 52 |
+| utf-8 | 348 |
+| cp1252 | 4 |
 
 ### Separatori
 
@@ -84,7 +84,7 @@ Questi i separatori di campo delle risorse CSV del catalogo.
 
 | delimiter | count |
 | --- | --- |
-| , | 102 |
+| , | 404 |
 
 ## Riepilogo anagrafico
 
@@ -95,7 +95,7 @@ Nel file seguente la raccolta ordinata, per tutti i file, delle informazioni pri
 
 ## Errori
 
-Il numero di file `CSV` che presenta almeno un errore è di **18** (il `15.93 %` del totale).
+Il numero di file `CSV` che presenta almeno un errore è di **20** (il `16.67 %` del totale).
 
 ▶ [Report errori di dettaglio](./errorsReport.csv)
 
@@ -103,16 +103,18 @@ Il numero di file `CSV` che presenta almeno un errore è di **18** (il `15.93 %`
 
 | error | count |
 | --- | --- |
-| type-error | 74 |
-| duplicate-label | 51 |
-| blank-label | 19 |
-| source-error | 1 |
+| blank-row | 924 |
+| extra-cell | 676 |
+| duplicate-label | 192 |
+| type-error | 120 |
+| blank-label | 52 |
 
 ### Tipi di errore - numero di file per tipo
 
 | error | count |
 | --- | --- |
-| blank-label | 8 |
-| type-error | 8 |
-| duplicate-label | 2 |
-| source-error | 1 |
+| type-error | 11 |
+| blank-label | 7 |
+| blank-row | 2 |
+| duplicate-label | 1 |
+| extra-cell | 1 |
