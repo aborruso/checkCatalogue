@@ -1,6 +1,6 @@
 🏢 Catalogo Open Data Comune Palermo<br>
 🔗 https://opendata.comune.palermo.it/dcat/dcat.php<br>
-📅 2021-10-18
+📅 2022-01-23
 
 ---
 
@@ -22,28 +22,28 @@
 | --- | --- |
 | XML | 694 |
 | CSV | 424 |
-| ZIP | 103 |
+| ZIP | 105 |
 | OP_DATPRO | 22 |
 | KML | 24 |
 | SHP | 1 |
 
 ## Dataset e risorse - numeri
 
-- Numero di dataset: `1185`
-- Numero di risorse: `1268`
+- Numero di dataset: `1187`
+- Numero di risorse: `1270`
 
 ### Conteggi di risorse per dataset
 
 | percentile 0.25 | percentile 0.50 | percentile 0.75 | mean | min | max |
 | --- | --- | --- | --- | --- | --- |
-| 1 | 1 | 1 | 1.071851 | 1 | 7 |
+| 1 | 1 | 1 | 1.071730 | 1 | 7 |
 
 # Check
 
 ## Intro
 
 **NOTA BENE**: questo check è stato eseguito soltanto sulle risorse in formato `CSV`,
-che qui sono un totale di **424** su 1268 (il `33.44 %`).
+che qui sono un totale di **424** su 1270 (il `33.39 %`).
 
 ### Forma e dimensioni
 
